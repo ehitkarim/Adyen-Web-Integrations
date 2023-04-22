@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Adyen Web Integration</title>
+	<!-- Link to Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+	<!-- For adding Images in Options --> 
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+
+	<!-- Custom CSS -->
+	<style>
+		/* Black header */
+		.header {
+			text-align: center;
+			background-color: black;
+			color: white;
+			height: 150px;
+			padding-top: 30px;
+			box-shadow: 0px 0px 10px gray;
+		}
+		/* Gray div */
+		.content {
+			margin-top: 30px;
+			background-color: white;
+			padding: 30px;
+			width:60%;
+			box-shadow: 0px 0px 10px gray;
+			border-radius: 5px;
+		}
+		/* Input fields */
+		.form-group {
+			margin-bottom: 20px;
+		}
+		label {
+			font-weight: bold;
+		}
+		input[type="text"], select {
+			border: 1px solid #ced4da;
+			border-radius: 5px;
+			padding: 10px;
+			width: 100%;
+			font-size: 16px;
+			outline: none;
+			transition: border-color 0.2s ease-in-out;
+		}
+		input[type="text"]:focus, select:focus {
+			border-color: #007bff;
+		}
+		button[type="submit"] {
+			background-color: #007bff;
+			color: white;
+			padding: 10px 20px;
+			border-radius: 5px;
+			border: none;
+			font-size: 16px;
+			cursor: pointer;
+			transition: background-color 0.2s ease-in-out;
+		}
+		button[type="submit"]:hover {
+			background-color: #0062cc;
+		}
+
+		  select.form-control {
+    height: 50px; /* Adjust the height as needed */
+    font-size: 18px; /* Adjust the font size as needed */
+  }
+
+	</style>
+
+
+
+
+
+</head>
+
+
+
+<body>
+	<!-- Black header -->
+	<div class="header"> 
+		<h1>Adyen Web Integration</h1>
+		<p> March 2023</p>
+	</div>
+	<!-- Gray div with input fields -->
+	<div class="container content">
+		<div class="row">
+			<div class="col-md-6 offset-md-3">
+			
+			<p id = "Outcome"> </p>
+			<p id = "Reference"> </p>
+			<p id = "Amount"> </p>
+
+			</div>
+		</div>
+	</div>
+	<!-- Link to Bootstrap JS -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+<script type="text/javascript">
+	
+	document.getElementById("Outcome").innerHTML  = 'Payment Result: {{Outcome}}';
+	document.getElementById("Amount").innerHTML  = 'Amount: {{Amount}} {{Currency}}';
+	document.getElementById("Reference").innerHTML  = 'Payment Reference: {{Reference}}';
+
+</script>
+
+
+
+<script>
+  function submitForm() {
+    // Get the input value from the form
+    var inputValue = document.getElementById('myForm').elements.namedItem('myInput').value;
+
+    // Append the input value as a URL parameter to the redirect URL
+    var redirectUrl = "{{ url_for('checkout') }}" + "?inputValue=" + encodeURIComponent(inputValue);
+
+    // Redirect to the checkout page with the input value as a parameter
+    location.href = redirectUrl;
+  }
+</script>
+
+</body>
+</html>

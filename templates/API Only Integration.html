@@ -1,0 +1,117 @@
+
+<html>
+<head> 
+<title> Adyen Web Dropin Demo</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+
+  <script src="https://checkoutshopper-live.adyen.com/checkoutshopper/sdk/5.33.0/adyen.js"
+  integrity="sha384-mPMlkgVUT7jVJZT0sTSfe+M4uN1ArRf1Itg76PcI6Y+zPLDvjCnjmAyyjtak3269"
+  crossorigin="anonymous"></script>
+
+<link rel="stylesheet"
+  href="https://checkoutshopper-live.adyen.com/checkoutshopper/sdk/5.33.0/adyen.css"
+  integrity="sha384-86hqIixzFjIoRoaNYg9pd4mtpn3HtgJmrpYiyTv+3DaGPF70VnRUbtK7MKLTLRd9"
+  crossorigin="anonymous">
+
+
+<script type="text/javascript">
+	const configuration = {
+  environment: 'test', // Change to one of the environment values specified in step 4.
+  clientKey: 'test_AN4EAVOADVD4DL7HC2QPBWKV6ECIAL5M', // Public key used for client-side authentication: https://docs.adyen.com/development-resources/client-side-authentication
+  analytics: {
+    enabled: true // Set to false to not send analytics data to Adyen.
+  },
+  session: {
+    id: '{{ID}}', // Unique identifier for the payment session.
+    sessionData: '{{session}}' // The payment session data.
+  },
+  onPaymentCompleted: (result, component) => {
+      console.info(result, component);
+  },
+  onError: (error, component) => {
+      console.error(error.name, error.message, error.stack, component);
+  },
+  // Any payment method specific configuration. Find the configuration specific to each payment method:  https://docs.adyen.com/payment-methods
+  // For example, this is 3D Secure configuration for cards:
+  paymentMethodsConfiguration: {
+    card: {
+      hasHolderName: true,
+      holderNameRequired: true,
+      billingAddressRequired: true
+    }
+  }
+};
+
+
+async function createCheckout()
+{
+  const checkout = await AdyenCheckout(configuration);
+  // Create an instance of Drop-in and mount it to the container you created.
+  const dropinComponent = checkout.create('dropin').mount('#dropin-container');
+}
+
+const checkout = createCheckout();
+
+
+</script>
+
+
+<style>
+/* Header/Logo Title */
+.header {
+  padding: 30px;
+  text-align: center;
+  background: black;
+  color: white;
+  font-size: 30px;
+   margin-bottom:30px;
+
+}
+
+.div1 {
+	 margin-left: auto;
+  margin-right: auto;	
+  padding: 15px;
+  text-align: center;
+  background: lightgrey;
+  color: white;
+  font-size: 30px;
+  width: 70%;
+  height: 50%;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Adyen Web Drop-In Integration</h1>
+  <p>March, 2022</p>
+</div>
+
+<div class = "div1">
+	<p> Content </p>
+	<input id = "am" type="number"> </input>
+	<select id = "Country"> 
+	<option> The Netherlands </option>
+	<option> Belgium </option>
+	<option> Singapore </option>
+	<option> United States of America </option>
+	</select>
+<div id="dropin-container"></div>
+
+</div>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+

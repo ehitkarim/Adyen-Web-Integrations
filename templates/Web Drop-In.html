@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Adyen Web-Drop In</title>
+	<!-- Link to Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+	<!-- For adding Images in Options --> 
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+
+    <!-- Embed the Adyen Web script element above any other JavaScript in your checkout page. -->
+  <script src="https://checkoutshopper-live.adyen.com/checkoutshopper/sdk/5.33.0/adyen.js"
+  integrity="sha384-mPMlkgVUT7jVJZT0sTSfe+M4uN1ArRf1Itg76PcI6Y+zPLDvjCnjmAyyjtak3269"
+  crossorigin="anonymous"></script>
+
+<link rel="stylesheet"
+  href="https://checkoutshopper-live.adyen.com/checkoutshopper/sdk/5.33.0/adyen.css"
+  integrity="sha384-86hqIixzFjIoRoaNYg9pd4mtpn3HtgJmrpYiyTv+3DaGPF70VnRUbtK7MKLTLRd9"
+  crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"> </script>
+
+<script type="text/javascript">
+	
+const configuration = {
+environment: 'test', // Change to one of the environment values specified in step 4.
+clientKey: 'test_AN4EAVOADVD4DL7HC2QPBWKV6ECIAL5M', // Public key used for client-side authentication: https://docs.adyen.com/development-resources/client-side-authentication
+analytics: {
+  enabled: true // Set to false to not send analytics data to Adyen.
+},
+session: {
+  id: '{{ID}}', // Unique identifier for the payment session.
+  sessionData: '{{Sessions}}' // The payment session data.
+},
+onPaymentCompleted: (result, component) => {
+    console.info(result, component);
+},
+onError: (error, component) => {
+    console.error(error.name, error.message, error.stack, component);
+},
+// Any payment method specific configuration. Find the configuration specific to each payment method:  https://docs.adyen.com/payment-methods
+// For example, this is 3D Secure configuration for cards:
+paymentMethodsConfiguration: {
+  card: {
+    hasHolderName: true,
+    holderNameRequired: true,
+    billingAddressRequired: true
+  }
+}
+};
+
+async function createCheckout()
+{
+  const checkout = await AdyenCheckout(configuration);
+  // Create an instance of Drop-in and mount it to the container you created.
+  const dropinComponent = checkout.create('dropin').mount('#dropin-container');
+}
+
+const checkout = createCheckout();
+
+</script>
+
+
+
+	<!-- Custom CSS -->
+	<style>
+		/* Black header */
+		.header {
+			text-align: center;
+			background-color: black;
+			color: white;
+			height: 150px;
+			padding-top: 30px;
+			box-shadow: 0px 0px 10px gray;
+		}
+		/* Gray div */
+		.content {
+			margin-top: 30px;
+			background-color: white;
+			padding: 30px;
+			width:60%;
+			box-shadow: 0px 0px 10px gray;
+			border-radius: 5px;
+		}
+		/* Input fields */
+		.form-group {
+			margin-bottom: 20px;
+		}
+		label {
+			font-weight: bold;
+		}
+		input[type="text"], select {
+			border: 1px solid #ced4da;
+			border-radius: 5px;
+			padding: 10px;
+			width: 100%;
+			font-size: 16px;
+			outline: none;
+			transition: border-color 0.2s ease-in-out;
+		}
+		input[type="text"]:focus, select:focus {
+			border-color: #007bff;
+		}
+		button[type="submit"] {
+			background-color: #007bff;
+			color: white;
+			padding: 10px 20px;
+			border-radius: 5px;
+			border: none;
+			font-size: 16px;
+			cursor: pointer;
+			transition: background-color 0.2s ease-in-out;
+		}
+		button[type="submit"]:hover {
+			background-color: #0062cc;
+		}
+
+		  select.form-control {
+    height: 50px; /* Adjust the height as needed */
+    font-size: 18px; /* Adjust the font size as needed */
+  }
+
+	</style>
+
+	<script>
+
+		function LoadData()
+		{
+			var Country = document.getElementById("mySelect").value;
+			var Amount = document.getElementById("Amount").value;
+			alert(Country);
+			alert(Amount);
+
+			if(isNaN(Amount) == true)
+			{
+				alert("Not a valid number!");
+			} 
+			else
+			{
+				alert(Amount);
+			}
+		}
+
+   </script>
+
+</head>
+<body>
+	<!-- Black header -->
+	<div class="header"> 
+		<h1>Adyen Web-Drop In</h1>
+		<p> March 2023</p>
+	</div>
+	<!-- Gray div with input fields -->
+	<div class="container content">
+		<div class="row">
+	
+						<div id="dropin-container"></div> 
+
+		</div>
+	</div>
+	<!-- Link to Bootstrap JS -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+	
+</body>
+</html>
