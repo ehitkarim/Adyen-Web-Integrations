@@ -8,15 +8,16 @@ app = Flask(__name__)
 @app.route('/handle', methods=['POST'])
 
 def addRegion():
-    AM = float(request.form['AM'])*100
-    CA = request.form['CA']
-    IN = request.form['I']
+    AM = float(request.form['AM'])*100 # Amount in minor units
+    CA = request.form['CA'] # Country 
+    IN = request.form['I'] # Type of integration
 
-    # Following is for generating payment reference
+    # Following is for generating payment reference 
     currentDateAndTime = datetime.now()
     Date = str(currentDateAndTime)
     string_element = ''.join([char for char in Date if char.isnumeric()])
 
+    # Country-Currency pairs
     Currency = { "SG":"SGD", "GB":"GBP", "US":"USD", "NL":"EUR", "AU":"AUD"}
 
     Headers = {"x-API-key": "AQEhhmfuXNWTK0Qc+iSGnWssruqDEIseWIfhSMkKMcCEcDinEMFdWw2+5HzctViMSCJMYAc=-/irxwsKh3s196odKGl0ZNVUylzfzCq1tmbcx5MwStZE=-J]~^%8KbK*fVz^Dw", "content-type": "application/json"}
@@ -29,7 +30,7 @@ def addRegion():
          }
 
     Result = requests.post("https://checkout-test.adyen.com/v69/sessions",headers = Headers,json = body)     
-    #print(f"Received project filepath: {project_filepath}")
+
     Result = Result.json()
     print(IN)
     #return Result["sessionData"]
@@ -52,7 +53,7 @@ def status():
     Result = requests.post("https://checkout-test.adyen.com/v69/payments/details",headers = headers, json = body)
     Result = Result.json()
 
-    return render_template('redirect.html', Outcome = Result['resultCode'], Reference = Result['merchantReference'], Amount = Result['amount']['value'], Currency =Result['amount']['currency']  )
+    return render_template('redirect.html', Outcome = Result['resultCode'], Reference = Result['merchantReference'], Amount = Result['amount']['value']/100, Currency =Result['amount']['currency']  )
 
 @app.route('/')
 
