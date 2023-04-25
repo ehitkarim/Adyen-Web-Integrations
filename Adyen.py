@@ -1,6 +1,14 @@
 from flask import Flask, render_template,jsonify, request, url_for
 import requests
 from datetime import datetime
+import os
+from dotenv import load_dotenv
+
+load_dotenv('/Users/REAZUL/Downloads/eh/Keys.env') # Specify full path to .env file
+
+api_key = os.getenv('API_KEY')
+merchant = os.getenv('MERCHANT')
+returnURL = os.getenv('RETURN_URL')
 
 app = Flask(__name__)
 
@@ -20,11 +28,11 @@ def addRegion():
     # Country-Currency pairs
     Currency = { "SG":"SGD", "GB":"GBP", "US":"USD", "NL":"EUR", "AU":"AUD"}
 
-    Headers = {"x-API-key": "AQEhhmfuXNWTK0Qc+iSGnWssruqDEIseWIfhSMkKMcCEcDinEMFdWw2+5HzctViMSCJMYAc=-/irxwsKh3s196odKGl0ZNVUylzfzCq1tmbcx5MwStZE=-J]~^%8KbK*fVz^Dw", "content-type": "application/json"}
+    Headers = {"x-API-key": api_key, "content-type": "application/json"}
 
-    body = { "merchantAccount": "VootinECOM",
+    body = { "merchantAccount": merchant,
          "amount": { "value": AM,"currency": Currency[CA] },
-         "returnUrl": "http://127.0.0.1:5000/redirect",
+         "returnUrl": returnURL,
          "reference": 'Ref_'+string_element,
          "countryCode": CA
          }
@@ -32,7 +40,7 @@ def addRegion():
     Result = requests.post("https://checkout-test.adyen.com/v69/sessions",headers = Headers,json = body)     
 
     Result = Result.json()
-    print(IN)
+    #print(api_key)
     #return Result["sessionData"]
     if(IN == 'W'):
     	return render_template('Web Drop-In.html', Sessions= Result["sessionData"], ID = Result["id"])
@@ -47,7 +55,7 @@ def status():
     sessionId = request.args.get('sessionId')
     redirectResult = request.args.get('redirectResult')
 
-    headers = {"x-API-key": "AQEhhmfuXNWTK0Qc+iSGnWssruqDEIseWIfhSMkKMcCEcDinEMFdWw2+5HzctViMSCJMYAc=-/irxwsKh3s196odKGl0ZNVUylzfzCq1tmbcx5MwStZE=-J]~^%8KbK*fVz^Dw", "content-type": "application/json"}
+    headers = {"x-API-key": api_key, "content-type": "application/json"}
     body =  { "details": {"redirectResult":redirectResult}}
 
     Result = requests.post("https://checkout-test.adyen.com/v69/payments/details",headers = headers, json = body)
